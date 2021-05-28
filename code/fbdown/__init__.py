@@ -58,12 +58,15 @@ def getdownlink(url):
             raise HTTPError
         a = findall("/video_redirect/", r.text)
         if len(a) == 0:
-            print("[!] Video Not Found...")
+            raise HTTPError
             exit(0)
         else:
             return unquote(r.text.split("?src=")[1].split('"')[0])
-    except (HTTPError, ConnectionError):
-        print("[x] Invalid URL")
+    except (HTTPError):
+        raise HTTPError
+        exit(1)
+    except ConnectionError:
+        raise ConnectionError
         exit(1)
     pass
 
